@@ -136,6 +136,9 @@ export function startRouter() {
     )
     .notFound(() => mountFullPage(() => import('@/views/errors/not-found.html?raw')));
 
+  if (!window.location.hash || window.location.hash === '#') {
+    window.location.hash = `#${PATHS.ROOT}`;
+  }
   router.resolve();
 }
 
