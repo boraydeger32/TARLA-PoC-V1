@@ -10,7 +10,7 @@ import { protectedRoute } from '@/components/navigation/protectedRoute.js';
  *
  * Alpine re-attaches to new content automatically via its mutation observer.
  */
-export const router = new Navigo('/', { hash: false, strategy: 'ONE' });
+export const router = new Navigo(import.meta.env.BASE_URL || '/', { hash: false, strategy: 'ONE' });
 
 const appRoot = () => /** @type {HTMLElement} */ (document.getElementById('app'));
 const outlet = () => document.getElementById('route-outlet');
