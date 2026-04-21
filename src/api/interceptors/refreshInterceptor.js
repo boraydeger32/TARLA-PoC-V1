@@ -3,7 +3,7 @@ import Alpine from 'alpinejs';
 
 import { ENDPOINTS } from '@/api/endpoints.js';
 import { apiBaseUrl } from '@/utils/env.js';
-import { PATHS } from '@/router/paths.js';
+import { PATHS, withBase } from '@/router/paths.js';
 
 /**
  * Dedicated axios instance used ONLY for the refresh call. It has NO
@@ -33,7 +33,7 @@ export async function refreshInterceptor(error) {
   const refreshToken = auth?.refreshToken;
   if (!refreshToken) {
     auth?.logout?.();
-    window.location.replace(PATHS.LOGIN);
+    window.location.replace(withBase(PATHS.LOGIN));
     return Promise.reject(error);
   }
 
@@ -58,7 +58,7 @@ export async function refreshInterceptor(error) {
     return axios(config);
   } catch (refreshErr) {
     auth?.logout?.();
-    window.location.replace(PATHS.LOGIN);
+    window.location.replace(withBase(PATHS.LOGIN));
     return Promise.reject(refreshErr);
   }
 }

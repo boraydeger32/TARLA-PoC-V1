@@ -9,6 +9,7 @@ import {
 import { t } from '@/i18n/index.js';
 import { formatPrice, formatDate } from '@/utils/format.js';
 import { canPerform } from '@/constants/roles.js';
+import { withBase } from '@/router/paths.js';
 
 const STATUS_OPTIONS = ['all', 'pending', 'approved', 'rejected', 'expired', 'draft'];
 
@@ -169,7 +170,7 @@ export function listingsListPage() {
     },
 
     goDetail(id) {
-      window.location.assign(`/admin/listings/${id}`);
+      window.location.assign(withBase(`/admin/listings/${id}`));
     },
   };
 }

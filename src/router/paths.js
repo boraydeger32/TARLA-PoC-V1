@@ -2,6 +2,15 @@
  * Canonical route paths. Every navigation SHALL resolve a value from this
  * frozen object — never hardcode a path string elsewhere.
  */
+const BASE = (import.meta.env?.BASE_URL || '/').replace(/\/$/, '');
+
+/** Prepend the app base URL so full-page redirects honor GitHub Pages subpaths. */
+export function withBase(path) {
+  if (!path || path === '*') return path;
+  if (/^https?:\/\//.test(path)) return path;
+  return `${BASE}${path.startsWith('/') ? '' : '/'}${path}`;
+}
+
 export const PATHS = Object.freeze({
   ROOT: '/',
   LOGIN: '/login',
