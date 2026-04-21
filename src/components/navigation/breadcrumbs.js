@@ -13,10 +13,11 @@ export function breadcrumbs() {
     init() {
       this.compute();
       window.addEventListener('popstate', () => this.compute());
+      window.addEventListener('hashchange', () => this.compute());
     },
 
     compute() {
-      const pathname = window.location.pathname;
+      const pathname = (window.location.hash || '').replace(/^#/, '') || window.location.pathname;
       if (!pathname.startsWith(PATHS.ADMIN.ROOT)) {
         this.items = [];
         return;

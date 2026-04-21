@@ -6,14 +6,18 @@ import { router } from '@/router/index.js';
 const ZONING = ['imarli', 'imarsiz', 'koy_yerlesik', 'ihtilafli', 'tarim'];
 const CURRENCIES = ['TRY', 'USD', 'EUR'];
 
+function getRouteSource() {
+  return window.location.hash || window.location.pathname;
+}
+
 function getRouteId() {
-  const m = window.location.pathname.match(/\/admin\/listings\/([^/]+)\/edit$/);
+  const m = getRouteSource().match(/\/admin\/listings\/([^/]+)\/edit$/);
   return m ? m[1] : null;
 }
 
 export function listingEditPage() {
   const id = getRouteId();
-  const isCreate = !id || window.location.pathname.endsWith('/listings/new');
+  const isCreate = !id || getRouteSource().endsWith('/listings/new');
   const controller = listingFormController({ mode: isCreate ? 'create' : 'update' });
 
   return {

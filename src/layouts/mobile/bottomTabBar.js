@@ -20,7 +20,8 @@ export function bottomTabBar() {
     items: TAB_ITEMS,
 
     isActive(path) {
-      return window.location.pathname.endsWith(path);
+      const current = (window.location.hash || '').replace(/^#/, '') || window.location.pathname;
+      return current === path || current.endsWith(path);
     },
 
     tLabel(key) {

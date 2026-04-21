@@ -13,7 +13,8 @@ import { formatDate } from '@/utils/format.js';
 import { canPerform } from '@/constants/roles.js';
 
 function getRouteId() {
-  const m = window.location.pathname.match(/\/admin\/users\/([^/]+)$/);
+  const source = window.location.hash || window.location.pathname;
+  const m = source.match(/\/admin\/users\/([^/]+)$/);
   return m ? m[1] : null;
 }
 

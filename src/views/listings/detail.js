@@ -10,7 +10,8 @@ import { canPerform } from '@/constants/roles.js';
 import { router } from '@/router/index.js';
 
 function getRouteId() {
-  const m = window.location.pathname.match(/\/admin\/listings\/([^/]+)$/);
+  const source = window.location.hash || window.location.pathname;
+  const m = source.match(/\/admin\/listings\/([^/]+)$/);
   return m ? m[1] : null;
 }
 

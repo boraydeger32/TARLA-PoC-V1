@@ -1,7 +1,7 @@
 import Alpine from 'alpinejs';
 
 import { ADMIN_ROLES } from '@/constants/roles.js';
-import { PATHS, withBase } from '@/router/paths.js';
+import { PATHS } from '@/router/paths.js';
 
 /**
  * Route guard factory. Wraps a Navigo handler; when the user is not logged in
@@ -18,16 +18,19 @@ export function protectedRoute(handler, requiredRoles) {
   return (match) => {
     const auth = Alpine.store('auth');
     if (!auth?.isAuthenticated?.()) {
-      return window.location.replace(withBase(PATHS.LOGIN));
+      window.location.hash = `#${PATHS.LOGIN}`;
+      return;
     }
 
     const role = auth.user?.role;
     if (!ADMIN_ROLES.includes(role)) {
-      return window.location.replace(withBase(PATHS.FORBIDDEN));
+      window.location.hash = `#${PATHS.FORBIDDEN}`;
+      return;
     }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      return window.location.replace(withBase(PATHS.FORBIDDEN));
+      window.location.hash = `#${PATHS.FORBIDDEN}`;
+      return;
     }
 
     return handler(match);

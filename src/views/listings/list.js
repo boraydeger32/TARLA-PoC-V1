@@ -170,7 +170,7 @@ export function listingsListPage() {
     },
 
     goDetail(id) {
-      window.location.assign(withBase(`/admin/listings/${id}`));
+      window.location.hash = `#/admin/listings/${id}`;
     },
   };
 }
