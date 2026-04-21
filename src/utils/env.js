@@ -15,12 +15,13 @@ export function getEnv(key, fallback = '') {
 
 /** @returns {boolean} */
 export function useMocks() {
-  return getEnv('VITE_USE_MOCKS', 'false') === 'true';
+  return getEnv('VITE_USE_MOCKS', 'true') === 'true';
 }
 
 /** @returns {string} */
 export function apiBaseUrl() {
-  return getEnv('VITE_API_BASE_URL', '/api/v1');
+  const base = (import.meta.env?.BASE_URL || '/').replace(/\/$/, '');
+  return getEnv('VITE_API_BASE_URL', `${base}/api/v1`);
 }
 
 /** @returns {boolean} */
