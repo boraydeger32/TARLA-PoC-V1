@@ -1,0 +1,42 @@
+{
+  "title": "System Settings",
+  "subtitle": "Manage platform-wide settings",
+  "groups": {
+    "general": "General",
+    "email": "Email",
+    "storage": "Storage",
+    "sms": "SMS",
+    "payment_gateway": "Payment Gateway"
+  },
+  "audit": {
+    "title": "Audit Log",
+    "columns": {
+      "admin": "Admin",
+      "action": "Action",
+      "target": "Target",
+      "details": "Details",
+      "ip_address": "IP Address",
+      "timestamp": "Timestamp"
+    }
+  },
+  "activity": {
+    "title": "Activity Log",
+    "columns": {
+      "user": "User",
+      "event": "Event",
+      "details": "Details",
+      "ip_address": "IP Address",
+      "timestamp": "Timestamp"
+    }
+  },
+  "columns": {
+    "key": "Key",
+    "value": "Value",
+    "description": "Description",
+    "updated_at": "Updated",
+    "public": "Public"
+  },
+  "toasts": {
+    "updated": "Setting updated"
+  }
+}

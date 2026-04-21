@@ -1,0 +1,43 @@
+<section x-data="locationsPage()" x-init="init()" x-cloak class="space-y-4">
+  <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'navigation.locations'"></h1>
+
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <header class="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
+        <h2 class="text-sm font-semibold uppercase text-gray-500">İller</h2>
+      </header>
+      <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loadingP"><li class="p-4 text-sm text-gray-500" x-t="'common.loading'"></li></template>
+        <template x-for="p in provinces" :key="p.id">
+          <li>
+            <button type="button"
+                    class="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700/40"
+                    :class="selectedProvinceId === p.id ? 'bg-primary-50 dark:bg-primary-900/30' : ''"
+                    @click="selectProvince(p.id)">
+              <span x-text="p.name_tr"></span>
+              <span class="rounded bg-gray-100 px-2 py-0.5 text-xs dark:bg-gray-700" x-text="p.listings_count"></span>
+            </button>
+          </li>
+        </template>
+      </ul>
+    </div>
+
+    <div class="rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <header class="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
+        <h2 class="text-sm font-semibold uppercase text-gray-500">İlçeler</h2>
+      </header>
+      <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="!selectedProvinceId">
+          <li class="p-4 text-sm text-gray-500">Bir il seçin</li>
+        </template>
+        <template x-if="loadingD"><li class="p-4 text-sm text-gray-500" x-t="'common.loading'"></li></template>
+        <template x-for="d in districts" :key="d.id">
+          <li class="flex items-center justify-between px-4 py-3 text-sm">
+            <span x-text="d.name_tr"></span>
+            <span class="rounded bg-gray-100 px-2 py-0.5 text-xs dark:bg-gray-700" x-text="d.listings_count"></span>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </div>
+</section>

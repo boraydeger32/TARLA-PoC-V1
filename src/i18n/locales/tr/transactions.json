@@ -1,0 +1,28 @@
+{
+  "search_placeholder": "İşlem ID veya kullanıcı...",
+  "columns": {
+    "id": "İşlem ID",
+    "user": "Kullanıcı",
+    "package": "Paket",
+    "amount": "Tutar"
+  },
+  "status": {
+    "all": "Tümü",
+    "pending": "Beklemede",
+    "completed": "Tamamlandı",
+    "failed": "Başarısız",
+    "refunded": "İade Edildi",
+    "cancelled": "İptal"
+  },
+  "actions": {
+    "refund": "İade Et",
+    "export": "CSV Dışa Aktar"
+  },
+  "dialogs": {
+    "refund_title": "İade Et",
+    "refund_body": "İade nedenini giriniz:"
+  },
+  "toasts": {
+    "refunded": "İşlem iade edildi"
+  }
+}

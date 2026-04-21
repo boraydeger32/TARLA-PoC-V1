@@ -1,0 +1,38 @@
+{
+  "banners": {
+    "new": "Yeni Banner",
+    "positions": {
+      "home_top": "Ana Üst",
+      "home_middle": "Ana Orta",
+      "sidebar": "Yan Panel"
+    },
+    "form": {
+      "image_url": "Görsel URL",
+      "link_url": "Bağlantı URL",
+      "position": "Konum",
+      "sort_order": "Sıra"
+    }
+  },
+  "faqs": {
+    "new": "Yeni SSS",
+    "form": {
+      "category": "Kategori",
+      "sort_order": "Sıra"
+    }
+  },
+  "blog": {
+    "new": "Yeni Yazı",
+    "published": "Yayında",
+    "draft": "Taslak",
+    "columns": {
+      "slug": "Slug",
+      "title": "Başlık",
+      "tags": "Etiketler",
+      "published": "Durum"
+    },
+    "form": {
+      "tags": "Etiketler (virgüllü)",
+      "cover_image_url": "Kapak Görseli URL"
+    }
+  }
+}

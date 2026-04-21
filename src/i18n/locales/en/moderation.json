@@ -1,0 +1,42 @@
+{
+  "subtitle": "Pending listings and reports",
+  "empty": "Queue is empty",
+  "columns": {
+    "type": "Type",
+    "target": "Target",
+    "priority": "Priority",
+    "received": "Received"
+  },
+  "types": {
+    "listing_pending": "Pending Listing",
+    "report": "Report"
+  },
+  "actions": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "resolve": "Resolve",
+    "dismiss": "Dismiss",
+    "warn": "Warn",
+    "remove": "Remove Content",
+    "ban": "Ban"
+  },
+  "dialogs": {
+    "approve_title": "Approve Listing",
+    "approve_body": "Are you sure you want to approve this listing?",
+    "reject_title": "Reject Listing",
+    "reject_body": "Enter rejection reason:",
+    "resolve_title": "Resolve Report",
+    "resolve_body": "Resolution note:",
+    "dismiss_title": "Dismiss Report",
+    "dismiss_body": "Dismiss reason:",
+    "warn_title": "Warn User",
+    "warn_body": "Message to send:",
+    "remove_title": "Remove Content",
+    "remove_body": "Why are you removing this content?",
+    "ban_title": "Ban User",
+    "ban_body": "Ban reason:"
+  },
+  "toasts": {
+    "done": "Action completed"
+  }
+}

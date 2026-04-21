@@ -1,0 +1,89 @@
+<section x-data="categoriesPage()" x-init="init()" x-cloak class="space-y-4">
+  <header class="flex items-center justify-between">
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'navigation.categories'"></h1>
+    <button type="button" class="btn btn-primary" @click="openCreate()">+</button>
+  </header>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-700/30">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Slug</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">TR</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">EN</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Üst</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Sıra</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500">Aktif</th>
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500" x-t="'common.actions'"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loading"><tr><td colspan="7" class="p-6 text-center" x-t="'common.loading'"></td></tr></template>
+        <template x-for="c in items" :key="c.id">
+          <tr>
+            <td class="px-4 py-3 text-sm font-mono text-gray-700 dark:text-gray-200" x-text="c.slug"></td>
+            <td class="px-4 py-3 text-sm" x-text="c.name_tr"></td>
+            <td class="px-4 py-3 text-sm" x-text="c.name_en"></td>
+            <td class="px-4 py-3 text-sm text-gray-500" x-text="parentName(c.parent_id)"></td>
+            <td class="px-4 py-3 text-sm" x-text="c.sort_order"></td>
+            <td class="px-4 py-3 text-sm">
+              <span class="inline-flex rounded-full px-2 py-0.5 text-xs"
+                    :class="c.is_active ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'"
+                    x-text="c.is_active ? $t('common.yes') : $t('common.no')"></span>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <button type="button" class="btn btn-secondary px-2 py-1 text-xs" @click="openEdit(c)" x-t="'common.edit'"></button>
+              <button type="button" class="btn btn-danger px-2 py-1 text-xs" @click="confirmDelete(c)" x-t="'common.delete'"></button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <div x-show="showForm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @keydown.escape.window="closeForm()">
+    <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeForm()">
+      <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white" x-text="editing ? $t('common.edit') : '+'"></h2>
+      <form @submit.prevent="submit()" class="space-y-3">
+        <div>
+          <label class="mb-1 block text-xs font-medium">Slug</label>
+          <input type="text" class="input-base w-full" x-model="form.slug" />
+          <p x-show="error('slug')" class="text-xs text-red-600" x-text="error('slug')"></p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium">Ad (TR)</label>
+            <input type="text" class="input-base w-full" x-model="form.name_tr" />
+            <p x-show="error('name_tr')" class="text-xs text-red-600" x-text="error('name_tr')"></p>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium">Name (EN)</label>
+            <input type="text" class="input-base w-full" x-model="form.name_en" />
+            <p x-show="error('name_en')" class="text-xs text-red-600" x-text="error('name_en')"></p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium">Üst</label>
+            <select class="input-base w-full" x-model="form.parent_id">
+              <option :value="null">— (Kök)</option>
+              <template x-for="c in items" :key="c.id"><option :value="c.id" x-text="c.name_tr"></option></template>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium">Sıra</label>
+            <input type="number" class="input-base w-full" x-model.number="form.sort_order" />
+          </div>
+        </div>
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" x-model="form.is_active" />
+          <span x-t="'common.yes'"></span>
+        </label>
+        <div class="flex justify-end gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+          <button type="button" class="btn btn-secondary" @click="closeForm()" x-t="'common.cancel'"></button>
+          <button type="submit" class="btn btn-primary" x-t="'common.save'"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

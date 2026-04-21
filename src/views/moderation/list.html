@@ -1,0 +1,111 @@
+<section x-data="moderationPage()" x-init="init()" x-cloak class="space-y-4">
+  <header>
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'navigation.moderation'"></h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400" x-t="'moderation.subtitle'"></p>
+  </header>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-700/30">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'moderation.columns.type'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'moderation.columns.target'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'moderation.columns.priority'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'moderation.columns.received'"></th>
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500" x-t="'common.actions'"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loading && items.length === 0">
+          <tr><td colspan="5" class="p-6 text-center text-sm text-gray-500" x-t="'common.loading'"></td></tr>
+        </template>
+        <template x-if="!loading && items.length === 0">
+          <tr><td colspan="5" class="p-6 text-center text-sm text-gray-500" x-t="'moderation.empty'"></td></tr>
+        </template>
+        <template x-for="it in items" :key="it.id">
+          <tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" @click="openItem(it)">
+            <td class="px-4 py-3 text-sm">
+              <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                    x-text="typeLabel(it.type)"></span>
+            </td>
+            <td class="px-4 py-3 text-sm">
+              <div class="font-medium text-gray-900 dark:text-white" x-text="it.title"></div>
+              <div class="text-xs text-gray-500 font-mono" x-text="it.target_type + ' · ' + it.target_id"></div>
+            </td>
+            <td class="px-4 py-3">
+              <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium" :class="priorityBadge(it.priority)" x-text="it.priority"></span>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-500" x-text="formatRelative(it.created_at)"></td>
+            <td class="px-4 py-3 text-right" @click.stop>
+              <button type="button" class="btn btn-secondary px-2 py-1 text-xs" @click="openItem(it)" x-t="'common.view'"></button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <div class="flex items-center justify-between border-t border-gray-200 px-4 py-3 text-sm dark:border-gray-700">
+      <span class="text-gray-500" x-text="total"></span>
+      <div class="flex items-center gap-1">
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" :disabled="params.page <= 1" @click="goPage(params.page - 1)" x-t="'common.back'"></button>
+        <span class="px-2 text-gray-600 dark:text-gray-300"><span x-text="params.page"></span> / <span x-text="pages()"></span></span>
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" :disabled="params.page >= pages()" @click="goPage(params.page + 1)" x-t="'common.next'"></button>
+      </div>
+    </div>
+  </div>
+
+  <div x-show="selected" x-cloak class="fixed inset-0 z-40 flex justify-end bg-black/40" @keydown.escape.window="closeDrawer()">
+    <aside class="flex h-full w-full max-w-md flex-col bg-white shadow-xl dark:bg-gray-800" @click.outside="closeDrawer()">
+      <header class="flex items-center justify-between border-b border-gray-200 px-4 py-3 dark:border-gray-700">
+        <h2 class="text-sm font-semibold text-gray-900 dark:text-white" x-text="selected?.title"></h2>
+        <button type="button" class="text-gray-500 hover:text-gray-700" @click="closeDrawer()" x-t="'common.close'"></button>
+      </header>
+      <div class="flex-1 space-y-3 overflow-y-auto p-4 text-sm">
+        <div><span class="text-gray-500" x-t="'moderation.columns.type'"></span>: <span x-text="typeLabel(selected?.type)"></span></div>
+        <div><span class="text-gray-500" x-t="'moderation.columns.target'"></span>: <span class="font-mono text-xs" x-text="selected?.target_type + ' · ' + selected?.target_id"></span></div>
+        <div><span class="text-gray-500" x-t="'moderation.columns.priority'"></span>: <span x-text="selected?.priority"></span></div>
+        <div><span class="text-gray-500" x-t="'moderation.columns.received'"></span>: <span x-text="formatRelative(selected?.created_at)"></span></div>
+      </div>
+      <footer class="flex flex-wrap gap-2 border-t border-gray-200 p-4 dark:border-gray-700">
+        <template x-if="selected?.type === 'listing_pending'">
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="btn btn-primary px-3 py-1 text-xs" x-show="canApprove()" @click="openDialog('approve')" x-t="'moderation.actions.approve'"></button>
+            <button type="button" class="btn btn-danger px-3 py-1 text-xs" x-show="canApprove()" @click="openDialog('reject')" x-t="'moderation.actions.reject'"></button>
+          </div>
+        </template>
+        <template x-if="selected?.type === 'report'">
+          <div class="flex flex-wrap gap-2">
+            <button type="button" class="btn btn-primary px-3 py-1 text-xs" @click="openDialog('resolve')" x-t="'moderation.actions.resolve'"></button>
+            <button type="button" class="btn btn-secondary px-3 py-1 text-xs" @click="openDialog('dismiss')" x-t="'moderation.actions.dismiss'"></button>
+          </div>
+        </template>
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" x-show="canWarn() && selected?.target_type === 'user'" @click="openDialog('warn')" x-t="'moderation.actions.warn'"></button>
+        <button type="button" class="btn btn-danger px-3 py-1 text-xs" x-show="canRemove()" @click="openDialog('remove')" x-t="'moderation.actions.remove'"></button>
+        <button type="button" class="btn btn-danger px-3 py-1 text-xs" x-show="canBan() && selected?.target_type === 'user'" @click="openDialog('ban')" x-t="'moderation.actions.ban'"></button>
+      </footer>
+    </aside>
+  </div>
+
+  <div x-show="dialog.type" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @keydown.escape.window="closeDialog()">
+    <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeDialog()">
+      <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white"
+          x-text="$t('moderation.dialogs.' + (dialog.type ?? 'approve') + '_title')"></h2>
+      <p class="mb-4 text-sm text-gray-600 dark:text-gray-300"
+         x-text="$t('moderation.dialogs.' + (dialog.type ?? 'approve') + '_body')"></p>
+
+      <div x-show="dialog.type === 'warn'" class="mb-4">
+        <textarea class="input-base w-full" rows="3" x-model="dialog.payload.message"></textarea>
+      </div>
+      <div x-show="['reject','resolve','dismiss','remove','ban'].includes(dialog.type)" class="mb-4">
+        <textarea class="input-base w-full" rows="3" x-model="dialog.payload.reason"></textarea>
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button type="button" class="btn btn-secondary" @click="closeDialog()" x-t="'common.cancel'"></button>
+        <button type="button" class="btn"
+                :class="['reject','remove','ban'].includes(dialog.type) ? 'btn-danger' : 'btn-primary'"
+                @click="confirm()" x-t="'common.confirm'"></button>
+      </div>
+    </div>
+  </div>
+</section>

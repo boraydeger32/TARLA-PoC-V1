@@ -1,0 +1,30 @@
+{
+  "generic": "Beklenmeyen bir hata oluştu",
+  "network": "Ağ bağlantı hatası",
+  "timeout": "İstek zaman aşımına uğradı",
+  "unknown": "Bilinmeyen hata",
+  "http": {
+    "400": "Geçersiz istek",
+    "401": "Oturum sona erdi. Lütfen tekrar giriş yapın.",
+    "403": "Bu işlem için yetkiniz yok",
+    "404": "Kayıt bulunamadı",
+    "409": "Çakışma oluştu",
+    "422": "Doğrulama hatası",
+    "429": "Çok fazla istek — lütfen bekleyin",
+    "500": "Sunucu hatası",
+    "503": "Servis şu an kullanılamıyor"
+  },
+  "page": {
+    "not_found_title": "Sayfa Bulunamadı",
+    "not_found_body": "Aradığınız sayfa mevcut değil.",
+    "forbidden_title": "Erişim Engellendi",
+    "forbidden_body": "Bu sayfayı görüntülemek için yetkiniz yok.",
+    "server_error_title": "Sunucu Hatası",
+    "server_error_body": "Bir şeyler ters gitti. Lütfen daha sonra tekrar deneyin."
+  },
+  "auth": {
+    "invalid_credentials": "E-posta veya şifre hatalı",
+    "login_failed": "Giriş başarısız",
+    "refresh_failed": "Oturum yenilenemedi"
+  }
+}

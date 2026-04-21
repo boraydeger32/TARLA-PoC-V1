@@ -1,0 +1,93 @@
+<section x-data="dashboardPage()" x-init="init()" x-cloak class="space-y-6">
+  <div>
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'dashboard.title'"></h1>
+    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+       x-text="$t('dashboard.welcome', { name: $store.auth.user?.full_name ?? '' })"></p>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400"
+           x-t="'dashboard.stats.active_listings'"></div>
+      <div class="mt-2 text-3xl font-bold text-gray-900 dark:text-white"
+           x-text="loadingStats ? '…' : formatNumber(stats?.active_listings ?? 0)"></div>
+      <div class="mt-1 text-xs" x-show="stats?.active_listings_change_pct !== undefined"
+           :class="(stats?.active_listings_change_pct ?? 0) >= 0 ? 'text-green-600' : 'text-red-600'">
+        <span x-text="((stats?.active_listings_change_pct ?? 0) >= 0 ? '+' : '') + (stats?.active_listings_change_pct ?? 0) + '%'"></span>
+        <span class="text-gray-500" x-t="'dashboard.stats.change_vs_last_week'"></span>
+      </div>
+    </div>
+
+    <button type="button"
+            class="rounded-xl border border-gray-200 bg-white p-5 text-left shadow-sm hover:border-primary-400 dark:border-gray-700 dark:bg-gray-800"
+            @click="pendingLink()">
+      <div class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400"
+           x-t="'dashboard.stats.pending_approval'"></div>
+      <div class="mt-2 text-3xl font-bold text-amber-600 dark:text-amber-400"
+           x-text="loadingStats ? '…' : formatNumber(stats?.pending_approvals ?? 0)"></div>
+      <div class="mt-1 text-xs text-primary-600 dark:text-primary-400" x-t="'common.view'"></div>
+    </button>
+
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400"
+           x-t="'dashboard.stats.total_users'"></div>
+      <div class="mt-2 text-3xl font-bold text-gray-900 dark:text-white"
+           x-text="loadingStats ? '…' : formatNumber(stats?.total_users ?? 0)"></div>
+      <div class="mt-1 text-xs" x-show="stats?.total_users_growth_pct !== undefined"
+           :class="(stats?.total_users_growth_pct ?? 0) >= 0 ? 'text-green-600' : 'text-red-600'">
+        <span x-text="((stats?.total_users_growth_pct ?? 0) >= 0 ? '+' : '') + (stats?.total_users_growth_pct ?? 0) + '%'"></span>
+        <span class="text-gray-500" x-t="'dashboard.stats.change_growth'"></span>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <div class="text-xs font-medium uppercase text-gray-500 dark:text-gray-400"
+           x-t="'dashboard.stats.total_revenue'"></div>
+      <div class="mt-2 text-3xl font-bold text-gray-900 dark:text-white"
+           x-text="loadingStats ? '…' : formatPrice(stats?.revenue_this_month ?? 0, stats?.revenue_currency ?? 'TRY')"></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200"
+          x-t="'dashboard.charts.listings_trend'"></h2>
+      <div x-ref="chartListings"></div>
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200"
+          x-t="'dashboard.charts.users_per_day'"></h2>
+      <div x-ref="chartUsers"></div>
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200"
+          x-t="'dashboard.charts.category_distribution'"></h2>
+      <div x-ref="chartCategories"></div>
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200"
+          x-t="'dashboard.charts.revenue_trend'"></h2>
+      <div x-ref="chartRevenue"></div>
+    </div>
+  </div>
+
+  <div class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <h2 class="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-200"
+        x-t="'dashboard.recent_activity.title'"></h2>
+    <template x-if="!recentActivity.length">
+      <p class="text-sm text-gray-500 dark:text-gray-400" x-t="'dashboard.recent_activity.empty'"></p>
+    </template>
+    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+      <template x-for="a in recentActivity" :key="a.id">
+        <li class="flex items-center justify-between py-2 text-sm">
+          <div>
+            <span class="font-medium text-gray-900 dark:text-white" x-text="a.actor_email"></span>
+            <span class="ml-2 text-gray-600 dark:text-gray-300" x-text="activityLabel(a.action)"></span>
+            <span class="ml-2 font-mono text-xs text-gray-500" x-text="a.target_id"></span>
+          </div>
+          <span class="text-xs text-gray-500" x-text="formatRelative(a.created_at)"></span>
+        </li>
+      </template>
+    </ul>
+  </div>
+</section>

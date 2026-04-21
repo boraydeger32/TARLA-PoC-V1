@@ -1,0 +1,84 @@
+{
+  "list": {
+    "title": "Users",
+    "subtitle": "Manage platform users",
+    "search_placeholder": "Search by name, email or phone..."
+  },
+  "detail": {
+    "title": "User Detail",
+    "profile": "Profile",
+    "listings": "Listings",
+    "messages": "Messages",
+    "activity": "Activity",
+    "last_login": "Last Login",
+    "registration": "Registered"
+  },
+  "form": {
+    "full_name_label": "Full Name",
+    "email_label": "Email",
+    "phone_label": "Phone",
+    "role_label": "Role",
+    "status_label": "Status"
+  },
+  "actions": {
+    "suspend": "Suspend",
+    "unsuspend": "Unsuspend",
+    "ban": "Ban",
+    "unban": "Unban",
+    "change_role": "Change Role",
+    "reset_password": "Reset Password",
+    "verify": "Verify",
+    "delete": "Delete"
+  },
+  "status": {
+    "all": "All",
+    "active": "Active",
+    "suspended": "Suspended",
+    "banned": "Banned",
+    "pending_verification": "Pending Verification"
+  },
+  "roles": {
+    "all": "All Roles",
+    "super_admin": "Super Admin",
+    "moderator": "Moderator",
+    "content_manager": "Content Manager",
+    "end_user": "End User"
+  },
+  "columns": {
+    "avatar": "Avatar",
+    "full_name": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "status": "Status",
+    "listings_count": "Listings",
+    "registration_date": "Registered"
+  },
+  "filters": {
+    "role": "Role",
+    "status": "Status"
+  },
+  "dialogs": {
+    "suspend_title": "Suspend User",
+    "suspend_body": "Provide a reason for the suspension.",
+    "unsuspend_title": "Unsuspend User",
+    "unsuspend_body": "Lift the suspension on this user?",
+    "ban_title": "Ban User",
+    "ban_body": "Provide a reason. The user cannot reverse this action.",
+    "ban_reason_label": "Reason",
+    "role_title": "Change Role",
+    "role_body": "Select the new role.",
+    "reset_title": "Reset Password",
+    "reset_body": "A temporary password will be generated and shown to you."
+  },
+  "toasts": {
+    "updated": "User updated",
+    "suspended": "User suspended",
+    "unsuspended": "Suspension lifted",
+    "banned": "User banned",
+    "unbanned": "Ban lifted",
+    "role_changed": "Role changed",
+    "verified": "User verified",
+    "password_reset": "Temporary password generated"
+  }
+}

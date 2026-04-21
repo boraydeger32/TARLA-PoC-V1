@@ -1,0 +1,33 @@
+<div class="flex min-h-screen items-center justify-center bg-background p-4 dark:bg-background-dark" x-data="loginPage" x-cloak>
+  <div class="w-full max-w-md rounded-2xl bg-surface p-8 shadow-lg dark:bg-surface-dark">
+    <div class="mb-6 text-center">
+      <h1 class="text-2xl font-bold text-primary-600 dark:text-primary-200" x-t="'common.app_name'"></h1>
+      <p class="mt-1 text-sm text-slate-500" x-t="'common.app_tagline'"></p>
+    </div>
+
+    <form @submit.prevent="submit" class="space-y-4">
+      <div>
+        <label class="mb-1 block text-sm font-medium" for="email" x-t="'forms.labels.email'"></label>
+        <input id="email" type="email" autocomplete="email" class="input-base" x-model.trim="form.email" :placeholder="$t('forms.placeholders.email')" />
+        <p class="mt-1 text-xs text-danger-500" x-show="errors.email" x-text="fieldError('email')"></p>
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm font-medium" for="password" x-t="'forms.labels.password'"></label>
+        <input id="password" type="password" autocomplete="current-password" class="input-base" x-model="form.password" />
+        <p class="mt-1 text-xs text-danger-500" x-show="errors.password" x-text="fieldError('password')"></p>
+      </div>
+
+      <div class="rounded-lg border border-danger-500/50 bg-danger-500/10 p-3 text-sm text-danger-600" x-show="serverError" x-text="serverError"></div>
+
+      <button type="submit" class="btn-primary w-full justify-center" :disabled="submitting">
+        <span x-show="!submitting" x-t="'forms.buttons.login'"></span>
+        <span x-show="submitting" x-t="'common.loading'"></span>
+      </button>
+
+      <div class="rounded-lg border border-dashed border-slate-300 p-3 text-xs text-slate-500 dark:border-slate-700">
+        Mock credentials: <code class="font-mono">super@aperant.tr</code> / <code class="font-mono">super123</code>
+      </div>
+    </form>
+  </div>
+</div>

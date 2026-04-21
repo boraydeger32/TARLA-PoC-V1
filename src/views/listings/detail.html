@@ -1,0 +1,124 @@
+<section x-data="listingDetailPage()" x-init="init()" x-cloak class="space-y-4">
+  <template x-if="loading">
+    <div class="flex h-64 items-center justify-center text-gray-500" x-t="'common.loading'"></div>
+  </template>
+
+  <template x-if="!loading && !item">
+    <div class="rounded-lg border border-red-200 bg-red-50 p-6 text-red-800 dark:bg-red-900/40 dark:text-red-200">
+      <p x-t="'common.error'"></p>
+    </div>
+  </template>
+
+  <template x-if="item">
+    <div class="space-y-4">
+      <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-text="item.title"></h1>
+          <p class="text-sm text-gray-500" x-text="item.id"></p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button"
+                  class="btn btn-secondary"
+                  x-show="canApprove() && item.status === 'pending'"
+                  @click="openDialog('approve')"
+                  x-t="'listings.actions.approve'"></button>
+          <button type="button"
+                  class="btn btn-secondary"
+                  x-show="canApprove() && item.status === 'pending'"
+                  @click="openDialog('reject')"
+                  x-t="'listings.actions.reject'"></button>
+          <button type="button"
+                  class="btn btn-secondary"
+                  x-show="canFeature() && item.status === 'approved'"
+                  @click="openDialog('feature')"
+                  x-t="'listings.actions.feature'"></button>
+          <button type="button" class="btn btn-secondary" @click="goEdit()" x-t="'listings.actions.edit'"></button>
+          <button type="button"
+                  class="btn btn-danger"
+                  x-show="canDelete()"
+                  @click="openDialog('delete')"
+                  x-t="'listings.actions.delete'"></button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="md:col-span-2 space-y-4">
+          <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="aspect-video bg-gray-100 dark:bg-gray-700">
+              <img :src="item.media?.[0]?.url ?? 'https://picsum.photos/seed/no/800/450'"
+                   class="h-full w-full object-cover" alt="" />
+            </div>
+            <div class="p-4">
+              <p class="whitespace-pre-line text-sm text-gray-700 dark:text-gray-200" x-text="item.description"></p>
+            </div>
+          </div>
+        </div>
+
+        <aside class="space-y-3 rounded-lg border border-gray-200 bg-white p-4 text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'common.status'"></div>
+            <div class="mt-1 font-medium text-gray-900 dark:text-white"
+                 x-text="$t('listings.status.' + item.status)"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'listings.columns.price'"></div>
+            <div class="mt-1 text-lg font-semibold text-primary-600 dark:text-primary-400" x-text="formatPrice()"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'listings.form.area_label'"></div>
+            <div class="mt-1 text-gray-900 dark:text-white" x-text="formatArea()"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'listings.form.zoning_label'"></div>
+            <div class="mt-1 text-gray-900 dark:text-white" x-text="item.zoning_status"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'listings.detail.views'"></div>
+            <div class="mt-1 text-gray-900 dark:text-white" x-text="item.view_count"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'listings.detail.favorites'"></div>
+            <div class="mt-1 text-gray-900 dark:text-white" x-text="item.favorite_count"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'common.created_at'"></div>
+            <div class="mt-1 text-gray-900 dark:text-white" x-text="formatDate(item.created_at)"></div>
+          </div>
+          <template x-if="item.approved_at">
+            <div>
+              <div class="text-xs uppercase text-gray-500" x-t="'listings.detail.approved_at'"></div>
+              <div class="mt-1 text-gray-900 dark:text-white" x-text="formatDate(item.approved_at)"></div>
+            </div>
+          </template>
+        </aside>
+      </div>
+    </div>
+  </template>
+
+  <div x-show="dialog.type" x-cloak
+       class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+       @keydown.escape.window="closeDialog()">
+    <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeDialog()">
+      <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white"
+          x-text="$t('listings.dialogs.' + (dialog.type ?? 'approve') + '_title')"></h2>
+      <p class="mb-4 text-sm text-gray-600 dark:text-gray-300"
+         x-text="$t('listings.dialogs.' + (dialog.type ?? 'approve') + '_body')"></p>
+
+      <div x-show="dialog.type === 'reject'" class="mb-4">
+        <textarea class="input-base w-full" rows="3" x-model="dialog.payload.reason"></textarea>
+      </div>
+      <div x-show="dialog.type === 'feature'" class="mb-4">
+        <input type="number" min="1" max="90" class="input-base w-full" x-model.number="dialog.payload.durationDays" />
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button type="button" class="btn btn-secondary" @click="closeDialog()" x-t="'common.cancel'"></button>
+        <button type="button"
+                class="btn"
+                :class="dialog.type === 'delete' ? 'btn-danger' : 'btn-primary'"
+                @click="confirm()"
+                x-t="'common.confirm'"></button>
+      </div>
+    </div>
+  </div>
+</section>

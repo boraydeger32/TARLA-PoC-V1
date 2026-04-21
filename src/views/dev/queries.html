@@ -1,0 +1,32 @@
+<div class="mx-auto max-w-4xl space-y-6 p-6" x-data="devQueriesPage" x-cloak>
+  <header>
+    <h1 class="text-2xl font-semibold">Dev — Queries Smoke</h1>
+    <p class="text-sm text-slate-500">MSW → axios → service → observer → Alpine</p>
+  </header>
+
+  <div class="rounded-xl bg-surface p-4 shadow-sm dark:bg-surface-dark">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-xs uppercase text-slate-500">Auth</div>
+        <div class="text-sm" x-text="authStatus"></div>
+      </div>
+      <button class="btn-primary" @click="login" :disabled="authStatus === 'authenticating'">Mock login</button>
+    </div>
+  </div>
+
+  <div class="rounded-xl bg-surface p-4 shadow-sm dark:bg-surface-dark">
+    <div class="mb-2 flex items-center justify-between">
+      <h2 class="font-semibold">Listings (observer)</h2>
+      <span class="text-xs text-slate-500" x-text="loading ? 'loading...' : `${items.length} of ${total}`"></span>
+    </div>
+    <p class="text-xs text-danger-500" x-show="error" x-text="error"></p>
+    <ul class="divide-y divide-slate-200 dark:divide-slate-700">
+      <template x-for="item in items" :key="item.id">
+        <li class="py-2">
+          <div class="font-medium" x-text="item.title"></div>
+          <div class="text-xs text-slate-500" x-text="`${item.status} • ${item.price} ${item.currency}`"></div>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>

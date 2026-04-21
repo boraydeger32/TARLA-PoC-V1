@@ -1,0 +1,126 @@
+<section x-data="usersListPage()" x-init="init()" x-cloak class="space-y-4">
+  <header class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'users.list.title'"></h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400" x-t="'users.list.subtitle'"></p>
+    </div>
+  </header>
+
+  <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div>
+        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300" x-t="'common.search'"></label>
+        <input type="search" class="input-base w-full"
+               :placeholder="$t('users.list.search_placeholder')"
+               x-model.debounce.300ms="params.q"
+               @input="onSearch()" />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300" x-t="'users.filters.role'"></label>
+        <select class="input-base" x-model="params.role" @change="setRole(params.role)">
+          <template x-for="r in roleOptions" :key="r"><option :value="r" x-text="$t('users.roles.' + r)"></option></template>
+        </select>
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300" x-t="'users.filters.status'"></label>
+        <select class="input-base" x-model="params.status" @change="setStatus(params.status)">
+          <template x-for="s in statusOptions" :key="s"><option :value="s" x-text="$t('users.status.' + s)"></option></template>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700/30">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'users.columns.full_name'"></th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'users.columns.email'"></th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'users.columns.role'"></th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'users.columns.status'"></th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'users.columns.listings_count'"></th>
+            <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'users.columns.registration_date'"></th>
+            <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500" x-t="'common.actions'"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          <template x-if="loading && items.length === 0">
+            <tr><td colspan="7" class="px-4 py-8 text-center text-sm text-gray-500" x-t="'common.loading'"></td></tr>
+          </template>
+          <template x-if="!loading && items.length === 0">
+            <tr><td colspan="7" class="px-4 py-8 text-center text-sm text-gray-500" x-t="'common.no_data'"></td></tr>
+          </template>
+          <template x-for="u in items" :key="u.id">
+            <tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" @click="goDetail(u.id)">
+              <td class="px-4 py-3">
+                <div class="font-medium text-gray-900 dark:text-white" x-text="u.full_name"></div>
+                <div class="text-xs text-gray-500" x-text="u.id"></div>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-200" x-text="u.email"></td>
+              <td class="px-4 py-3">
+                <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium" :class="roleBadge(u.role)" x-text="roleLabel(u.role)"></span>
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium" :class="statusBadge(u.status)" x-text="statusLabel(u.status)"></span>
+              </td>
+              <td class="px-4 py-3 text-sm" x-text="u.listings_count"></td>
+              <td class="px-4 py-3 text-sm text-gray-500" x-text="formatDate(u.created_at)"></td>
+              <td class="px-4 py-3 text-right" @click.stop>
+                <div class="inline-flex gap-1">
+                  <button type="button" class="btn btn-secondary px-2 py-1 text-xs"
+                          x-show="canSuspend() && u.status === 'active'"
+                          @click="openDialog('suspend', u.id)" x-t="'users.actions.suspend'"></button>
+                  <button type="button" class="btn btn-secondary px-2 py-1 text-xs"
+                          x-show="canSuspend() && u.status === 'suspended'"
+                          @click="openDialog('unsuspend', u.id)" x-t="'users.actions.unsuspend'"></button>
+                  <button type="button" class="btn btn-danger px-2 py-1 text-xs"
+                          x-show="canBan() && u.status !== 'banned'"
+                          @click="openDialog('ban', u.id)" x-t="'users.actions.ban'"></button>
+                  <button type="button" class="btn btn-secondary px-2 py-1 text-xs"
+                          x-show="canChangeRole()"
+                          @click="openDialog('role', u.id)" x-t="'users.actions.change_role'"></button>
+                </div>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex items-center justify-between border-t border-gray-200 px-4 py-3 text-sm dark:border-gray-700">
+      <span class="text-gray-500" x-text="total"></span>
+      <div class="flex items-center gap-1">
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" :disabled="params.page <= 1" @click="goPage(params.page - 1)" x-t="'common.back'"></button>
+        <span class="px-2 text-gray-600 dark:text-gray-300"><span x-text="params.page"></span> / <span x-text="pages"></span></span>
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" :disabled="params.page >= pages" @click="goPage(params.page + 1)" x-t="'common.next'"></button>
+      </div>
+    </div>
+  </div>
+
+  <div x-show="dialog.type" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @keydown.escape.window="closeDialog()">
+    <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeDialog()">
+      <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white" x-text="$t('users.dialogs.' + (dialog.type ?? 'suspend') + '_title')"></h2>
+      <p class="mb-4 text-sm text-gray-600 dark:text-gray-300" x-text="$t('users.dialogs.' + (dialog.type ?? 'suspend') + '_body')"></p>
+
+      <div x-show="dialog.type === 'suspend' || dialog.type === 'ban'" class="mb-4">
+        <textarea class="input-base w-full" rows="3" x-model="dialog.payload.reason"></textarea>
+      </div>
+      <div x-show="dialog.type === 'role'" class="mb-4">
+        <select class="input-base w-full" x-model="dialog.payload.role">
+          <option value="end_user">end_user</option>
+          <option value="content_manager">content_manager</option>
+          <option value="moderator">moderator</option>
+          <option value="super_admin">super_admin</option>
+        </select>
+      </div>
+
+      <div class="flex justify-end gap-2">
+        <button type="button" class="btn btn-secondary" @click="closeDialog()" x-t="'common.cancel'"></button>
+        <button type="button" class="btn"
+                :class="dialog.type === 'ban' ? 'btn-danger' : 'btn-primary'"
+                @click="confirm()" x-t="'common.confirm'"></button>
+      </div>
+    </div>
+  </div>
+</section>

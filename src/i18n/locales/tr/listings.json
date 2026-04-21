@@ -1,0 +1,82 @@
+{
+  "list": {
+    "title": "İlanlar",
+    "subtitle": "Arsa ilanlarını yönet",
+    "search_placeholder": "Başlık, açıklama veya ID ara..."
+  },
+  "detail": {
+    "title": "İlan Detayı",
+    "owner": "İlan Sahibi",
+    "views": "Görüntülenme",
+    "favorites": "Favoriye alma",
+    "approved_at": "Onay Tarihi",
+    "approved_by": "Onaylayan"
+  },
+  "form": {
+    "create_title": "Yeni İlan Oluştur",
+    "edit_title": "İlanı Düzenle",
+    "title_label": "İlan Başlığı",
+    "description_label": "Açıklama",
+    "price_label": "Fiyat",
+    "currency_label": "Para Birimi",
+    "category_label": "Kategori",
+    "location_label": "Lokasyon",
+    "area_label": "Alan (m²)",
+    "zoning_label": "İmar Durumu",
+    "media_label": "Medya"
+  },
+  "actions": {
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "feature": "Öne Çıkar",
+    "unfeature": "Öne Çıkarmayı Kaldır",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "new": "Yeni İlan"
+  },
+  "status": {
+    "pending": "Onay Bekliyor",
+    "approved": "Onaylı",
+    "rejected": "Reddedildi",
+    "expired": "Süresi Dolmuş",
+    "all": "Tüm Durumlar"
+  },
+  "columns": {
+    "thumbnail": "Görsel",
+    "title": "Başlık",
+    "category": "Kategori",
+    "location": "Lokasyon",
+    "price": "Fiyat",
+    "owner": "İlan Sahibi",
+    "status": "Durum",
+    "created_at": "Oluşturulma"
+  },
+  "filters": {
+    "status": "Durum",
+    "category": "Kategori",
+    "location": "Lokasyon",
+    "price_range": "Fiyat Aralığı",
+    "date_range": "Tarih Aralığı",
+    "clear": "Filtreleri Temizle"
+  },
+  "dialogs": {
+    "approve_title": "İlanı Onayla",
+    "approve_body": "Bu ilanı onaylamak istediğinizden emin misiniz?",
+    "reject_title": "İlanı Reddet",
+    "reject_body": "Red sebebini giriniz (en az 10 karakter).",
+    "reject_reason_label": "Red sebebi",
+    "feature_title": "Öne Çıkar",
+    "feature_body": "Bu ilan kaç gün süreyle öne çıkarılsın?",
+    "feature_duration_label": "Süre (gün)",
+    "delete_title": "İlanı Sil",
+    "delete_body": "Bu ilan kalıcı olarak silinecek. Emin misiniz?"
+  },
+  "toasts": {
+    "approved": "İlan onaylandı",
+    "rejected": "İlan reddedildi",
+    "featured": "İlan öne çıkarıldı",
+    "deleted": "İlan silindi",
+    "created": "İlan oluşturuldu",
+    "updated": "İlan güncellendi"
+  }
+}

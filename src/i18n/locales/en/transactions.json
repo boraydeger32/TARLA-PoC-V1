@@ -1,0 +1,28 @@
+{
+  "search_placeholder": "Transaction ID or user...",
+  "columns": {
+    "id": "Transaction ID",
+    "user": "User",
+    "package": "Package",
+    "amount": "Amount"
+  },
+  "status": {
+    "all": "All",
+    "pending": "Pending",
+    "completed": "Completed",
+    "failed": "Failed",
+    "refunded": "Refunded",
+    "cancelled": "Cancelled"
+  },
+  "actions": {
+    "refund": "Refund",
+    "export": "Export CSV"
+  },
+  "dialogs": {
+    "refund_title": "Refund",
+    "refund_body": "Enter refund reason:"
+  },
+  "toasts": {
+    "refunded": "Transaction refunded"
+  }
+}

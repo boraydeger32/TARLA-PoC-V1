@@ -1,0 +1,42 @@
+{
+  "title": "Sistem Ayarları",
+  "subtitle": "Platform genel ayarlarını yönet",
+  "groups": {
+    "general": "Genel",
+    "email": "E-posta",
+    "storage": "Depolama",
+    "sms": "SMS",
+    "payment_gateway": "Ödeme Altyapısı"
+  },
+  "audit": {
+    "title": "Denetim Logu",
+    "columns": {
+      "admin": "Yönetici",
+      "action": "İşlem",
+      "target": "Hedef",
+      "details": "Detaylar",
+      "ip_address": "IP Adresi",
+      "timestamp": "Zaman"
+    }
+  },
+  "activity": {
+    "title": "Aktivite Logu",
+    "columns": {
+      "user": "Kullanıcı",
+      "event": "Olay",
+      "details": "Detaylar",
+      "ip_address": "IP Adresi",
+      "timestamp": "Zaman"
+    }
+  },
+  "columns": {
+    "key": "Anahtar",
+    "value": "Değer",
+    "description": "Açıklama",
+    "updated_at": "Güncellenme",
+    "public": "Herkese Açık"
+  },
+  "toasts": {
+    "updated": "Ayar güncellendi"
+  }
+}

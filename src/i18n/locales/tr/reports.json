@@ -1,0 +1,28 @@
+{
+  "subtitle": "Kullanıcılardan gelen şikayetler",
+  "columns": {
+    "reason": "Neden",
+    "target": "Hedef",
+    "reporter": "Şikayet Eden"
+  },
+  "status": {
+    "all": "Tümü",
+    "open": "Açık",
+    "in_review": "İncelemede",
+    "resolved": "Çözüldü",
+    "dismissed": "Reddedildi"
+  },
+  "actions": {
+    "resolve": "Çöz",
+    "dismiss": "Yoksay"
+  },
+  "dialogs": {
+    "resolve_title": "Raporu Çöz",
+    "resolve_body": "Çözüm notunu giriniz:",
+    "dismiss_title": "Raporu Yoksay",
+    "dismiss_body": "Yoksayma nedenini giriniz:"
+  },
+  "toasts": {
+    "updated": "Rapor güncellendi"
+  }
+}

@@ -1,0 +1,41 @@
+<section x-data="activityLogPage()" x-init="init()" x-cloak class="space-y-4">
+  <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'settings.activity.title'"></h1>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-700/30">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.activity.columns.user'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.activity.columns.event'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.activity.columns.ip_address'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.activity.columns.timestamp'"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loading && items.length === 0">
+          <tr><td colspan="4" class="p-6 text-center text-sm text-gray-500" x-t="'common.loading'"></td></tr>
+        </template>
+        <template x-if="!loading && items.length === 0">
+          <tr><td colspan="4" class="p-6 text-center text-sm text-gray-500" x-t="'common.no_data'"></td></tr>
+        </template>
+        <template x-for="a in items" :key="a.id">
+          <tr>
+            <td class="px-4 py-3 text-sm font-mono text-gray-500" x-text="a.user_id"></td>
+            <td class="px-4 py-3 text-sm font-mono" x-text="a.event"></td>
+            <td class="px-4 py-3 text-sm text-gray-500" x-text="a.ip_address"></td>
+            <td class="px-4 py-3 text-sm text-gray-500" x-text="formatDateTime(a.created_at)"></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <div class="flex items-center justify-between border-t border-gray-200 px-4 py-3 text-sm dark:border-gray-700">
+      <span class="text-gray-500" x-text="total"></span>
+      <div class="flex items-center gap-1">
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" :disabled="params.page <= 1" @click="goPage(params.page - 1)" x-t="'common.back'"></button>
+        <span class="px-2"><span x-text="params.page"></span> / <span x-text="pages()"></span></span>
+        <button type="button" class="btn btn-secondary px-3 py-1 text-xs" :disabled="params.page >= pages()" @click="goPage(params.page + 1)" x-t="'common.next'"></button>
+      </div>
+    </div>
+  </div>
+</section>

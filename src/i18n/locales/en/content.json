@@ -1,0 +1,38 @@
+{
+  "banners": {
+    "new": "New Banner",
+    "positions": {
+      "home_top": "Home Top",
+      "home_middle": "Home Middle",
+      "sidebar": "Sidebar"
+    },
+    "form": {
+      "image_url": "Image URL",
+      "link_url": "Link URL",
+      "position": "Position",
+      "sort_order": "Sort Order"
+    }
+  },
+  "faqs": {
+    "new": "New FAQ",
+    "form": {
+      "category": "Category",
+      "sort_order": "Sort Order"
+    }
+  },
+  "blog": {
+    "new": "New Post",
+    "published": "Published",
+    "draft": "Draft",
+    "columns": {
+      "slug": "Slug",
+      "title": "Title",
+      "tags": "Tags",
+      "published": "Status"
+    },
+    "form": {
+      "tags": "Tags (comma-separated)",
+      "cover_image_url": "Cover Image URL"
+    }
+  }
+}

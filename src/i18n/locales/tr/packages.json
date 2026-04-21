@@ -1,0 +1,28 @@
+{
+  "actions": {
+    "new": "Yeni Paket"
+  },
+  "columns": {
+    "name": "Ad",
+    "type": "Tip",
+    "price": "Fiyat",
+    "duration": "Süre",
+    "active": "Aktif"
+  },
+  "types": {
+    "featured": "Vitrin",
+    "doping": "Doping",
+    "premium": "Premium"
+  },
+  "form": {
+    "name_tr": "Ad (TR)",
+    "name_en": "Name (EN)",
+    "description_tr": "Açıklama (TR)",
+    "description_en": "Description (EN)",
+    "type": "Tip",
+    "price": "Fiyat",
+    "currency": "Para Birimi",
+    "duration": "Süre (gün)",
+    "is_active": "Aktif"
+  }
+}

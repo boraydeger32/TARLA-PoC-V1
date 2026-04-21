@@ -1,0 +1,37 @@
+{
+  "validation": {
+    "required": "Bu alan zorunludur",
+    "too_small": "Değer çok küçük",
+    "too_big": "Değer çok büyük",
+    "invalid_type": "Geçersiz değer",
+    "invalid_string": "Geçersiz metin",
+    "invalid_email": "Geçerli bir e-posta girin",
+    "invalid_url": "Geçerli bir URL girin",
+    "invalid_number": "Geçerli bir sayı girin",
+    "min_length": "En az {{min}} karakter olmalı",
+    "max_length": "En fazla {{max}} karakter olmalı",
+    "min_value": "En az {{min}} olmalı",
+    "max_value": "En fazla {{max}} olmalı",
+    "must_match": "Değerler eşleşmiyor",
+    "phone_invalid": "Geçerli bir telefon numarası girin",
+    "custom": "Geçersiz değer"
+  },
+  "labels": {
+    "email": "E-posta",
+    "password": "Şifre",
+    "confirm_password": "Şifre (Tekrar)",
+    "remember_me": "Beni hatırla",
+    "forgot_password": "Şifremi unuttum"
+  },
+  "placeholders": {
+    "email": "ornek@aperant.com",
+    "password": "••••••••",
+    "search": "Ara..."
+  },
+  "buttons": {
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "reset": "Sıfırla",
+    "apply": "Uygula"
+  }
+}

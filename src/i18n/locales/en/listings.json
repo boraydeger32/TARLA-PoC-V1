@@ -1,0 +1,82 @@
+{
+  "list": {
+    "title": "Listings",
+    "subtitle": "Manage land listings",
+    "search_placeholder": "Search by title, description, or ID..."
+  },
+  "detail": {
+    "title": "Listing Detail",
+    "owner": "Owner",
+    "views": "Views",
+    "favorites": "Favorites",
+    "approved_at": "Approved at",
+    "approved_by": "Approved by"
+  },
+  "form": {
+    "create_title": "Create Listing",
+    "edit_title": "Edit Listing",
+    "title_label": "Title",
+    "description_label": "Description",
+    "price_label": "Price",
+    "currency_label": "Currency",
+    "category_label": "Category",
+    "location_label": "Location",
+    "area_label": "Area (m²)",
+    "zoning_label": "Zoning Status",
+    "media_label": "Media"
+  },
+  "actions": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "feature": "Feature",
+    "unfeature": "Unfeature",
+    "delete": "Delete",
+    "edit": "Edit",
+    "new": "New Listing"
+  },
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "expired": "Expired",
+    "all": "All Statuses"
+  },
+  "columns": {
+    "thumbnail": "Image",
+    "title": "Title",
+    "category": "Category",
+    "location": "Location",
+    "price": "Price",
+    "owner": "Owner",
+    "status": "Status",
+    "created_at": "Created at"
+  },
+  "filters": {
+    "status": "Status",
+    "category": "Category",
+    "location": "Location",
+    "price_range": "Price range",
+    "date_range": "Date range",
+    "clear": "Clear filters"
+  },
+  "dialogs": {
+    "approve_title": "Approve Listing",
+    "approve_body": "Are you sure you want to approve this listing?",
+    "reject_title": "Reject Listing",
+    "reject_body": "Enter a rejection reason (min 10 characters).",
+    "reject_reason_label": "Rejection reason",
+    "feature_title": "Feature Listing",
+    "feature_body": "For how many days should this listing be featured?",
+    "feature_duration_label": "Duration (days)",
+    "delete_title": "Delete Listing",
+    "delete_body": "This listing will be permanently deleted. Are you sure?"
+  },
+  "toasts": {
+    "approved": "Listing approved",
+    "rejected": "Listing rejected",
+    "featured": "Listing featured",
+    "deleted": "Listing deleted",
+    "created": "Listing created",
+    "updated": "Listing updated"
+  }
+}

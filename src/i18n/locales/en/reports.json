@@ -1,0 +1,28 @@
+{
+  "subtitle": "User-submitted reports",
+  "columns": {
+    "reason": "Reason",
+    "target": "Target",
+    "reporter": "Reporter"
+  },
+  "status": {
+    "all": "All",
+    "open": "Open",
+    "in_review": "In Review",
+    "resolved": "Resolved",
+    "dismissed": "Dismissed"
+  },
+  "actions": {
+    "resolve": "Resolve",
+    "dismiss": "Dismiss"
+  },
+  "dialogs": {
+    "resolve_title": "Resolve Report",
+    "resolve_body": "Enter resolution note:",
+    "dismiss_title": "Dismiss Report",
+    "dismiss_body": "Enter dismissal reason:"
+  },
+  "toasts": {
+    "updated": "Report updated"
+  }
+}

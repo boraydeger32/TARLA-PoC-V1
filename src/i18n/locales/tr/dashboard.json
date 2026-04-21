@@ -1,0 +1,28 @@
+{
+  "title": "Gösterge Paneli",
+  "welcome": "Hoş geldiniz, {{name}}",
+  "stats": {
+    "active_listings": "Aktif İlanlar",
+    "pending_approval": "Onay Bekleyen",
+    "total_users": "Toplam Kullanıcı",
+    "total_revenue": "Aylık Gelir",
+    "change_vs_last_week": "geçen haftaya göre",
+    "change_growth": "büyüme"
+  },
+  "charts": {
+    "listings_trend": "Son 30 Gün İlan Trendi",
+    "users_per_day": "Günlük Yeni Kullanıcı",
+    "category_distribution": "Kategori Dağılımı",
+    "revenue_trend": "Gelir Trendi (12 ay)"
+  },
+  "recent_activity": {
+    "title": "Son Aktiviteler",
+    "empty": "Henüz aktivite yok"
+  },
+  "activity": {
+    "listing.approve": "ilanı onayladı",
+    "listing.reject": "ilanı reddetti",
+    "user.suspend": "kullanıcıyı askıya aldı",
+    "report.resolve": "raporu çözümledi"
+  }
+}

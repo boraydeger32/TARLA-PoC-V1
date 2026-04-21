@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition;
+  }
+  .btn-primary {
+    @apply btn bg-primary-500 text-white hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply btn bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-surface-dark-soft dark:text-slate-100 dark:hover:bg-slate-700;
+  }
+  .btn-danger {
+    @apply btn bg-danger-500 text-white hover:bg-danger-600 focus:ring-4 focus:ring-red-300;
+  }
+  .input-base {
+    @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-primary-500 focus:ring-primary-500 dark:border-slate-600 dark:bg-surface-dark-soft dark:text-slate-100;
+  }
+}

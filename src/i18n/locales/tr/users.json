@@ -1,0 +1,84 @@
+{
+  "list": {
+    "title": "Kullanıcılar",
+    "subtitle": "Platform kullanıcılarını yönet",
+    "search_placeholder": "Ad, e-posta veya telefon ara..."
+  },
+  "detail": {
+    "title": "Kullanıcı Detayı",
+    "profile": "Profil",
+    "listings": "İlanları",
+    "messages": "Mesajlar",
+    "activity": "Aktivite",
+    "last_login": "Son Giriş",
+    "registration": "Kayıt Tarihi"
+  },
+  "form": {
+    "full_name_label": "Ad Soyad",
+    "email_label": "E-posta",
+    "phone_label": "Telefon",
+    "role_label": "Rol",
+    "status_label": "Durum"
+  },
+  "actions": {
+    "suspend": "Askıya Al",
+    "unsuspend": "Askıyı Kaldır",
+    "ban": "Yasakla",
+    "unban": "Yasağı Kaldır",
+    "change_role": "Rol Değiştir",
+    "reset_password": "Şifre Sıfırla",
+    "verify": "Doğrula",
+    "delete": "Sil"
+  },
+  "status": {
+    "all": "Tümü",
+    "active": "Aktif",
+    "suspended": "Askıda",
+    "banned": "Yasaklı",
+    "pending_verification": "Doğrulama Bekliyor"
+  },
+  "roles": {
+    "all": "Tüm Roller",
+    "super_admin": "Süper Yönetici",
+    "moderator": "Moderatör",
+    "content_manager": "İçerik Yöneticisi",
+    "end_user": "Son Kullanıcı"
+  },
+  "columns": {
+    "avatar": "Avatar",
+    "full_name": "Ad Soyad",
+    "email": "E-posta",
+    "phone": "Telefon",
+    "role": "Rol",
+    "status": "Durum",
+    "listings_count": "İlanları",
+    "registration_date": "Kayıt Tarihi"
+  },
+  "filters": {
+    "role": "Rol",
+    "status": "Durum"
+  },
+  "dialogs": {
+    "suspend_title": "Kullanıcıyı Askıya Al",
+    "suspend_body": "Askıya alma sebebini giriniz.",
+    "unsuspend_title": "Askıyı Kaldır",
+    "unsuspend_body": "Bu kullanıcının askıya alınmasını kaldırmak istiyor musunuz?",
+    "ban_title": "Kullanıcıyı Yasakla",
+    "ban_body": "Yasaklama sebebini giriniz. Kullanıcı bu işlemi geri alamaz.",
+    "ban_reason_label": "Sebep",
+    "role_title": "Rol Değiştir",
+    "role_body": "Yeni rolü seçiniz.",
+    "reset_title": "Şifre Sıfırla",
+    "reset_body": "Geçici şifre üretilecek ve gösterilecek."
+  },
+  "toasts": {
+    "updated": "Kullanıcı güncellendi",
+    "suspended": "Kullanıcı askıya alındı",
+    "unsuspended": "Askı kaldırıldı",
+    "banned": "Kullanıcı yasaklandı",
+    "unbanned": "Yasak kaldırıldı",
+    "role_changed": "Rol değiştirildi",
+    "verified": "Kullanıcı doğrulandı",
+    "password_reset": "Geçici şifre üretildi"
+  }
+}

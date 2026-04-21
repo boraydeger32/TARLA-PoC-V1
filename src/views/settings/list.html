@@ -1,0 +1,51 @@
+<section x-data="settingsPage()" x-init="init()" x-cloak class="space-y-4">
+  <header>
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'settings.title'"></h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400" x-t="'settings.subtitle'"></p>
+  </header>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-700/30">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.columns.key'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.columns.value'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.columns.description'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'settings.columns.updated_at'"></th>
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500" x-t="'common.actions'"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loading">
+          <tr><td colspan="5" class="p-6 text-center text-sm text-gray-500" x-t="'common.loading'"></td></tr>
+        </template>
+        <template x-for="s in items" :key="s.id ?? s.key">
+          <tr>
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-200" x-text="s.key"></td>
+            <td class="px-4 py-3 text-sm">
+              <template x-if="editingKey !== s.key">
+                <span class="text-gray-900 dark:text-white" x-text="displayValue(s.value)"></span>
+              </template>
+              <template x-if="editingKey === s.key">
+                <input type="text" class="input-base w-full" x-model="draft" />
+              </template>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-500" x-text="s.description"></td>
+            <td class="px-4 py-3 text-sm text-gray-500" x-text="formatDateTime(s.updated_at)"></td>
+            <td class="px-4 py-3 text-right">
+              <template x-if="editingKey !== s.key">
+                <button type="button" class="btn btn-secondary px-2 py-1 text-xs" @click="startEdit(s)" x-t="'common.edit'"></button>
+              </template>
+              <template x-if="editingKey === s.key">
+                <div class="inline-flex gap-1">
+                  <button type="button" class="btn btn-primary px-2 py-1 text-xs" @click="save(s)" x-t="'common.save'"></button>
+                  <button type="button" class="btn btn-secondary px-2 py-1 text-xs" @click="cancelEdit()" x-t="'common.cancel'"></button>
+                </div>
+              </template>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+</section>

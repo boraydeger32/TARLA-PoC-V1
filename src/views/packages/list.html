@@ -1,0 +1,112 @@
+<section x-data="packagesPage()" x-init="init()" x-cloak class="space-y-4">
+  <header class="flex items-center justify-between">
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'navigation.packages'"></h1>
+    <button type="button" class="btn btn-primary" @click="openCreate()" x-t="'packages.actions.new'"></button>
+  </header>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-700/30">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'packages.columns.name'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'packages.columns.type'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'packages.columns.price'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'packages.columns.duration'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'packages.columns.active'"></th>
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500" x-t="'common.actions'"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loading">
+          <tr><td colspan="6" class="p-6 text-center text-sm text-gray-500" x-t="'common.loading'"></td></tr>
+        </template>
+        <template x-for="p in items" :key="p.id">
+          <tr>
+            <td class="px-4 py-3">
+              <div class="font-medium text-gray-900 dark:text-white" x-text="p.name_tr"></div>
+              <div class="text-xs text-gray-500" x-text="p.name_en"></div>
+            </td>
+            <td class="px-4 py-3 text-sm" x-text="typeLabel(p.type)"></td>
+            <td class="px-4 py-3 text-sm" x-text="formatPrice(p.price, p.currency)"></td>
+            <td class="px-4 py-3 text-sm" x-text="p.duration_days + ' gün'"></td>
+            <td class="px-4 py-3 text-sm">
+              <button type="button" class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium"
+                      :class="p.is_active ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'"
+                      @click="toggleActive(p)"
+                      x-text="p.is_active ? $t('common.yes') : $t('common.no')"></button>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <button type="button" class="btn btn-secondary px-2 py-1 text-xs" @click="openEdit(p)" x-t="'common.edit'"></button>
+              <button type="button" class="btn btn-danger px-2 py-1 text-xs" @click="confirmDelete(p)" x-t="'common.delete'"></button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <div x-show="showForm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @keydown.escape.window="closeForm()">
+    <div class="w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeForm()">
+      <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white"
+          x-text="editing ? $t('common.edit') : $t('packages.actions.new')"></h2>
+      <form @submit.prevent="submit()" class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.name_tr'"></label>
+            <input type="text" class="input-base w-full" x-model="form.name_tr" />
+            <p x-show="error('name_tr')" class="text-xs text-red-600" x-text="error('name_tr')"></p>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.name_en'"></label>
+            <input type="text" class="input-base w-full" x-model="form.name_en" />
+            <p x-show="error('name_en')" class="text-xs text-red-600" x-text="error('name_en')"></p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.description_tr'"></label>
+            <textarea class="input-base w-full" rows="2" x-model="form.description_tr"></textarea>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.description_en'"></label>
+            <textarea class="input-base w-full" rows="2" x-model="form.description_en"></textarea>
+          </div>
+        </div>
+        <div class="grid grid-cols-4 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.type'"></label>
+            <select class="input-base w-full" x-model="form.type">
+              <template x-for="tp in typeOptions" :key="tp">
+                <option :value="tp" x-text="typeLabel(tp)"></option>
+              </template>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.price'"></label>
+            <input type="number" min="0" class="input-base w-full" x-model.number="form.price" />
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.currency'"></label>
+            <select class="input-base w-full" x-model="form.currency">
+              <template x-for="c in currencyOptions" :key="c">
+                <option :value="c" x-text="c"></option>
+              </template>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'packages.form.duration'"></label>
+            <input type="number" min="1" class="input-base w-full" x-model.number="form.duration_days" />
+          </div>
+        </div>
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" x-model="form.is_active" />
+          <span x-t="'packages.form.is_active'"></span>
+        </label>
+        <div class="flex justify-end gap-2 border-t border-gray-200 pt-3 dark:border-gray-700">
+          <button type="button" class="btn btn-secondary" @click="closeForm()" x-t="'common.cancel'"></button>
+          <button type="submit" class="btn btn-primary" x-t="'common.save'"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

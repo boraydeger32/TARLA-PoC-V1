@@ -1,0 +1,109 @@
+<section x-data="blogPage()" x-init="init()" x-cloak class="space-y-4">
+  <header class="flex items-center justify-between">
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-t="'navigation.blog'"></h1>
+    <button type="button" class="btn btn-primary" @click="openCreate()" x-t="'content.blog.new'"></button>
+  </header>
+
+  <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+      <thead class="bg-gray-50 dark:bg-gray-700/30">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'content.blog.columns.slug'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'content.blog.columns.title'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'content.blog.columns.tags'"></th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-gray-500" x-t="'content.blog.columns.published'"></th>
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-gray-500" x-t="'common.actions'"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <template x-if="loading">
+          <tr><td colspan="5" class="p-6 text-center text-sm text-gray-500" x-t="'common.loading'"></td></tr>
+        </template>
+        <template x-for="p in items" :key="p.id">
+          <tr>
+            <td class="px-4 py-3 text-sm font-mono" x-text="p.slug"></td>
+            <td class="px-4 py-3">
+              <div class="font-medium text-gray-900 dark:text-white" x-text="p.title_tr"></div>
+              <div class="text-xs text-gray-500" x-text="p.title_en"></div>
+            </td>
+            <td class="px-4 py-3 text-xs text-gray-500" x-text="(p.tags ?? []).join(', ')"></td>
+            <td class="px-4 py-3 text-sm">
+              <button type="button" class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium"
+                      :class="p.is_published ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'"
+                      @click="togglePublish(p)"
+                      x-text="p.is_published ? $t('content.blog.published') : $t('content.blog.draft')"></button>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <button type="button" class="btn btn-secondary px-2 py-1 text-xs" @click="openEdit(p)" x-t="'common.edit'"></button>
+              <button type="button" class="btn btn-danger px-2 py-1 text-xs" @click="confirmDelete(p)" x-t="'common.delete'"></button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <div x-show="showForm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 overflow-y-auto py-10" @keydown.escape.window="closeForm()">
+    <div class="w-full max-w-3xl rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeForm()">
+      <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white"
+          x-text="editing ? $t('common.edit') : $t('content.blog.new')"></h2>
+      <form @submit.prevent="submit()" class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium">Slug</label>
+            <input type="text" class="input-base w-full" x-model="form.slug" />
+            <p x-show="error('slug')" class="text-xs text-red-600" x-text="error('slug')"></p>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium" x-t="'content.blog.form.tags'"></label>
+            <input type="text" class="input-base w-full" x-model="tagsInput" placeholder="arsa, tarla, yatırım" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium">Başlık (TR)</label>
+            <input type="text" class="input-base w-full" x-model="form.title_tr" />
+            <p x-show="error('title_tr')" class="text-xs text-red-600" x-text="error('title_tr')"></p>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium">Title (EN)</label>
+            <input type="text" class="input-base w-full" x-model="form.title_en" />
+            <p x-show="error('title_en')" class="text-xs text-red-600" x-text="error('title_en')"></p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium">Özet (TR)</label>
+            <textarea class="input-base w-full" rows="2" x-model="form.excerpt_tr"></textarea>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium">Excerpt (EN)</label>
+            <textarea class="input-base w-full" rows="2" x-model="form.excerpt_en"></textarea>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="mb-1 block text-xs font-medium">Gövde (TR)</label>
+            <textarea class="input-base w-full" rows="6" x-model="form.body_tr"></textarea>
+          </div>
+          <div>
+            <label class="mb-1 block text-xs font-medium">Body (EN)</label>
+            <textarea class="input-base w-full" rows="6" x-model="form.body_en"></textarea>
+          </div>
+        </div>
+        <div>
+          <label class="mb-1 block text-xs font-medium" x-t="'content.blog.form.cover_image_url'"></label>
+          <input type="url" class="input-base w-full" x-model="form.cover_image_url" />
+        </div>
+        <label class="inline-flex items-center gap-2 text-sm">
+          <input type="checkbox" x-model="form.is_published" />
+          <span x-t="'content.blog.published'"></span>
+        </label>
+        <div class="flex justify-end gap-2 border-t border-gray-200 pt-3 dark:border-gray-700">
+          <button type="button" class="btn btn-secondary" @click="closeForm()" x-t="'common.cancel'"></button>
+          <button type="submit" class="btn btn-primary" x-t="'common.save'"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

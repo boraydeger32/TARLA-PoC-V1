@@ -1,0 +1,28 @@
+{
+  "actions": {
+    "new": "New Package"
+  },
+  "columns": {
+    "name": "Name",
+    "type": "Type",
+    "price": "Price",
+    "duration": "Duration",
+    "active": "Active"
+  },
+  "types": {
+    "featured": "Featured",
+    "doping": "Doping",
+    "premium": "Premium"
+  },
+  "form": {
+    "name_tr": "Name (TR)",
+    "name_en": "Name (EN)",
+    "description_tr": "Description (TR)",
+    "description_en": "Description (EN)",
+    "type": "Type",
+    "price": "Price",
+    "currency": "Currency",
+    "duration": "Duration (days)",
+    "is_active": "Active"
+  }
+}

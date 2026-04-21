@@ -1,0 +1,118 @@
+<section x-data="userDetailPage()" x-init="init()" x-cloak class="space-y-4">
+  <template x-if="loading"><div class="flex h-48 items-center justify-center text-gray-500" x-t="'common.loading'"></div></template>
+
+  <template x-if="!loading && user">
+    <div class="space-y-4">
+      <header class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h1 class="text-2xl font-semibold text-gray-900 dark:text-white" x-text="user.full_name"></h1>
+          <div class="mt-1 flex flex-wrap items-center gap-2 text-sm">
+            <span class="text-gray-500" x-text="user.email"></span>
+            <span class="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-xs dark:bg-gray-700" x-text="roleLabel(user.role)"></span>
+            <span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium" :class="statusBadge(user.status)" x-text="statusLabel(user.status)"></span>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn btn-secondary"
+                  x-show="canSuspend() && user.status === 'active'"
+                  @click="openDialog('suspend')" x-t="'users.actions.suspend'"></button>
+          <button type="button" class="btn btn-secondary"
+                  x-show="canSuspend() && user.status === 'suspended'"
+                  @click="openDialog('unsuspend')" x-t="'users.actions.unsuspend'"></button>
+          <button type="button" class="btn btn-secondary"
+                  x-show="canChangeRole()"
+                  @click="openDialog('role')" x-t="'users.actions.change_role'"></button>
+          <button type="button" class="btn btn-secondary"
+                  @click="openDialog('reset')" x-t="'users.actions.reset_password'"></button>
+          <button type="button" class="btn btn-danger"
+                  x-show="canBan() && user.status !== 'banned'"
+                  @click="openDialog('ban')" x-t="'users.actions.ban'"></button>
+        </div>
+      </header>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div class="md:col-span-2 space-y-4">
+          <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="mb-3 flex items-center justify-between">
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white" x-t="'users.detail.profile'"></h2>
+              <button type="button" class="btn btn-secondary text-xs" x-show="!isEditing" @click="startEdit()" x-t="'common.edit'"></button>
+            </div>
+
+            <template x-if="!isEditing">
+              <dl class="grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
+                <div>
+                  <dt class="text-xs text-gray-500" x-t="'users.form.full_name_label'"></dt>
+                  <dd class="text-gray-900 dark:text-white" x-text="user.full_name"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs text-gray-500" x-t="'users.form.email_label'"></dt>
+                  <dd class="text-gray-900 dark:text-white" x-text="user.email"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs text-gray-500" x-t="'users.form.phone_label'"></dt>
+                  <dd class="text-gray-900 dark:text-white" x-text="user.phone ?? '—'"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs text-gray-500" x-t="'users.detail.last_login'"></dt>
+                  <dd class="text-gray-900 dark:text-white" x-text="user.last_login_at ? formatDate(user.last_login_at) : '—'"></dd>
+                </div>
+              </dl>
+            </template>
+
+            <template x-if="isEditing">
+              <form @submit.prevent="saveEdit()" class="space-y-3">
+                <div>
+                  <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300" x-t="'users.form.full_name_label'"></label>
+                  <input type="text" class="input-base w-full" x-model="editForm.full_name" />
+                </div>
+                <div>
+                  <label class="mb-1 block text-xs font-medium text-gray-600 dark:text-gray-300" x-t="'users.form.phone_label'"></label>
+                  <input type="text" class="input-base w-full" x-model="editForm.phone" />
+                </div>
+                <div class="flex justify-end gap-2">
+                  <button type="button" class="btn btn-secondary" @click="cancelEdit()" x-t="'common.cancel'"></button>
+                  <button type="submit" class="btn btn-primary" x-t="'common.save'"></button>
+                </div>
+              </form>
+            </template>
+          </div>
+        </div>
+
+        <aside class="space-y-3 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'users.detail.registration'"></div>
+            <div class="mt-1 text-sm text-gray-900 dark:text-white" x-text="formatDate(user.created_at)"></div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-gray-500" x-t="'users.columns.listings_count'"></div>
+            <div class="mt-1 text-2xl font-semibold text-primary-600 dark:text-primary-400" x-text="user.listings_count"></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </template>
+
+  <div x-show="dialog.type" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @keydown.escape.window="closeDialog()">
+    <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800" @click.outside="closeDialog()">
+      <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white" x-text="$t('users.dialogs.' + (dialog.type ?? 'suspend') + '_title')"></h2>
+      <p class="mb-4 text-sm text-gray-600 dark:text-gray-300" x-text="$t('users.dialogs.' + (dialog.type ?? 'suspend') + '_body')"></p>
+      <div x-show="dialog.type === 'suspend' || dialog.type === 'ban'" class="mb-4">
+        <textarea class="input-base w-full" rows="3" x-model="dialog.payload.reason"></textarea>
+      </div>
+      <div x-show="dialog.type === 'role'" class="mb-4">
+        <select class="input-base w-full" x-model="dialog.payload.role">
+          <option value="end_user">end_user</option>
+          <option value="content_manager">content_manager</option>
+          <option value="moderator">moderator</option>
+          <option value="super_admin">super_admin</option>
+        </select>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button type="button" class="btn btn-secondary" @click="closeDialog()" x-t="'common.cancel'"></button>
+        <button type="button" class="btn"
+                :class="dialog.type === 'ban' ? 'btn-danger' : 'btn-primary'"
+                @click="confirm()" x-t="'common.confirm'"></button>
+      </div>
+    </div>
+  </div>
+</section>

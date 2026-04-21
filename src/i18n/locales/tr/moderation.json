@@ -1,0 +1,42 @@
+{
+  "subtitle": "Bekleyen ilanlar ve raporlar",
+  "empty": "Kuyruk boş",
+  "columns": {
+    "type": "Tip",
+    "target": "Hedef",
+    "priority": "Öncelik",
+    "received": "Gelme Zamanı"
+  },
+  "types": {
+    "listing_pending": "Bekleyen İlan",
+    "report": "Rapor"
+  },
+  "actions": {
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "resolve": "Çöz",
+    "dismiss": "Yoksay",
+    "warn": "Uyar",
+    "remove": "İçeriği Kaldır",
+    "ban": "Yasakla"
+  },
+  "dialogs": {
+    "approve_title": "İlanı Onayla",
+    "approve_body": "Bu ilanı onaylamak istediğinizden emin misiniz?",
+    "reject_title": "İlanı Reddet",
+    "reject_body": "Red nedeninizi giriniz:",
+    "resolve_title": "Raporu Çöz",
+    "resolve_body": "Çözüm notu:",
+    "dismiss_title": "Raporu Yoksay",
+    "dismiss_body": "Yoksayma nedeni:",
+    "warn_title": "Kullanıcıyı Uyar",
+    "warn_body": "Gönderilecek mesaj:",
+    "remove_title": "İçeriği Kaldır",
+    "remove_body": "İçeriği neden kaldırıyorsunuz?",
+    "ban_title": "Kullanıcıyı Yasakla",
+    "ban_body": "Yasaklama nedeni:"
+  },
+  "toasts": {
+    "done": "İşlem tamamlandı"
+  }
+}

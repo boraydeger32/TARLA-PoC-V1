@@ -1,0 +1,28 @@
+{
+  "title": "Dashboard",
+  "welcome": "Welcome, {{name}}",
+  "stats": {
+    "active_listings": "Active Listings",
+    "pending_approval": "Pending Approval",
+    "total_users": "Total Users",
+    "total_revenue": "Monthly Revenue",
+    "change_vs_last_week": "vs last week",
+    "change_growth": "growth"
+  },
+  "charts": {
+    "listings_trend": "Listings Trend (Last 30 Days)",
+    "users_per_day": "New Users Per Day",
+    "category_distribution": "Category Distribution",
+    "revenue_trend": "Revenue Trend (12 months)"
+  },
+  "recent_activity": {
+    "title": "Recent Activity",
+    "empty": "No activity yet"
+  },
+  "activity": {
+    "listing.approve": "approved listing",
+    "listing.reject": "rejected listing",
+    "user.suspend": "suspended user",
+    "report.resolve": "resolved report"
+  }
+}
